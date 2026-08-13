@@ -13,7 +13,8 @@
 html {
   scroll-behavior: auto;
   -webkit-text-size-adjust: 100%;
-  overflow-x: clip; /* Bloquea cualquier desplazamiento horizontal en toda la web */
+  overflow-x: hidden;
+  max-width: 100%;
   cursor: none; /* Cursor nativo oculto: se usa el cursor personalizado */
 }
 
@@ -23,11 +24,24 @@ body {
   font-weight: var(--font-weight-regular);
   line-height: 1.6;
   color: var(--color-text-primary);
-  background-color: #000; /* Fallback negro puro (cubre antes de que cargue el vídeo) */
+  background-color: #000; /* Fallback negro puro */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Sin overflow-x en body: es necesario para que position:sticky funcione correctamente */
-  cursor: none; /* Cursor nativo oculto */
+  overflow-x: hidden;
+  max-width: 100%;
+  position: relative;
+  cursor: none;
+}
+
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  main {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
 }
 
 /* ---- Transport Overlay — Transición cinemática de salto entre secciones ---- */

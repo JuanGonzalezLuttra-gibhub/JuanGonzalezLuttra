@@ -58,6 +58,8 @@ export function initNav() {
   };
 
   /* ---- Mobile menu ---- */
+  const closeBtn = document.getElementById('navMobileClose');
+
   const openMenu = () => {
     mobileMenu?.classList.add('is-open');
     burger?.setAttribute('aria-expanded', 'true');
@@ -74,6 +76,8 @@ export function initNav() {
     const isOpen = mobileMenu?.classList.contains('is-open');
     isOpen ? closeMenu() : openMenu();
   });
+
+  closeBtn?.addEventListener('click', closeMenu);
 
   mobileMenu?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeMenu);

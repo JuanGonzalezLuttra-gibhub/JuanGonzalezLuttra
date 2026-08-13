@@ -157,22 +157,27 @@
   transform-origin: center;
 }
 
-/* Mobile menu overlay */
+/* Mobile menu overlay — encuadre perfecto dentro del viewport */
 .nav__mobile {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 99;
-  background: rgba(8, 8, 8, 0.97);
-  backdrop-filter: blur(20px);
+  width: 100vw;
+  height: 100dvh;
+  z-index: 99999;
+  background: rgba(6, 9, 18, 0.96);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
-  padding: var(--space-8);
+  gap: clamp(1.2rem, 3.5vh, 2.4rem);
+  padding: clamp(2rem, 6vw, 4rem) var(--container-padding);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--duration-base) var(--ease-out);
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .nav__mobile.is-open {
@@ -180,15 +185,43 @@
   pointer-events: auto;
 }
 
+/* Botón X de cierre dentro del menú móvil */
+.nav__mobile-close {
+  position: absolute;
+  top: clamp(1rem, 4vw, 1.5rem);
+  right: var(--container-padding);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  z-index: 100000;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+  touch-action: manipulation;
+}
+
+.nav__mobile-close:active {
+  transform: scale(0.92);
+  background: rgba(201, 168, 76, 0.15);
+  border-color: var(--color-gold);
+}
+
 .nav__mobile a {
-  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-size: clamp(1.8rem, 7vw, 3.2rem);
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.03em;
   color: var(--color-text-secondary);
   transition: color var(--duration-fast) var(--ease-out);
+  touch-action: manipulation;
 }
 
-.nav__mobile a:hover { color: var(--color-text-primary); }
+.nav__mobile a:hover,
+.nav__mobile a:active { color: var(--color-text-primary); }
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {

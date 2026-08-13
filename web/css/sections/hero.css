@@ -332,13 +332,13 @@
     padding-top: calc(var(--nav-height) + 2rem);
   }
 
-  .hero__heading  { font-size: clamp(3.0rem, 11vw, 5.8rem); }
+  .hero__heading  { font-size: clamp(3.6rem, 13vw, 6.4rem); }
   .hero__right    { gap: var(--space-5); }
-  .hero__statement { font-size: clamp(1.05rem, 2.5vw, 1.35rem); }
+  .hero__statement { font-size: clamp(1.1rem, 2.8vw, 1.4rem); }
 }
 
 @media (max-width: 600px) {
-  .hero__heading  { font-size: clamp(2.8rem, 12.2vw, 4.8rem); }
+  .hero__heading  { font-size: clamp(3.3rem, 14.5vw, 5.4rem); }
   .hero__ctas     { flex-direction: column; }
   .hero__btn      { justify-content: center; }
 }

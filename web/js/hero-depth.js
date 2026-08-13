@@ -46,11 +46,13 @@ export function initHeroDepth() {
   // ─── 2. MOBILE: DeviceOrientation (Inclinación física del teléfono) ──────────
   const handleOrientation = (e) => {
     if (!isMobile()) return;
-    if (e.gamma !== null && e.beta !== null) {
+    const gamma = e.gamma;
+    const beta  = e.beta;
+    if (gamma !== null && beta !== null && (gamma !== 0 || beta !== 0)) {
       hasOrientationData = true;
       // gamma (-30° a 30°), beta (centrado alrededor de 30° de descanso)
-      const normGamma = Math.max(-1, Math.min(1, e.gamma / 28));
-      const normBeta  = Math.max(-1, Math.min(1, (e.beta - 32) / 28));
+      const normGamma = Math.max(-1, Math.min(1, gamma / 25));
+      const normBeta  = Math.max(-1, Math.min(1, (beta - 30) / 25));
       targetX       = normGamma;
       targetY       = normBeta;
       isInteracting = true;
@@ -59,12 +61,12 @@ export function initHeroDepth() {
 
   if ('DeviceOrientationEvent' in window) {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS 13+ Safari: solicitar permiso en el primer toque del usuario
       const requestiOSPermission = () => {
         DeviceOrientationEvent.requestPermission()
           .then((state) => {
             if (state === 'granted') {
               window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+              window.addEventListener('deviceorientationabsolute', handleOrientation, { passive: true });
             }
           })
           .catch(() => {})
@@ -75,15 +77,16 @@ export function initHeroDepth() {
       window.addEventListener('touchstart', requestiOSPermission, { passive: true, once: true });
     } else {
       window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+      window.addEventListener('deviceorientationabsolute', handleOrientation, { passive: true });
     }
   }
 
-  // ─── 3. MOBILE: Touch Drag Fallback (Si no hay giróscopo o sin permiso) ───────
+  // ─── 3. MOBILE: Touch Drag & Scroll Parallax Fallback ─────────────────────────
   let touchStartX = 0;
   let touchStartY = 0;
 
   const onTouchStart = (e) => {
-    if (!isMobile() || hasOrientationData) return;
+    if (!isMobile()) return;
     if (e.touches.length === 1) {
       touchStartX   = e.touches[0].clientX;
       touchStartY   = e.touches[0].clientY;
@@ -92,12 +95,14 @@ export function initHeroDepth() {
   };
 
   const onTouchMove = (e) => {
-    if (!isMobile() || hasOrientationData) return;
+    if (!isMobile()) return;
     if (e.touches.length === 1) {
       const deltaX = e.touches[0].clientX - touchStartX;
       const deltaY = e.touches[0].clientY - touchStartY;
-      targetX      = Math.max(-1, Math.min(1, deltaX / (window.innerWidth * 0.35)));
-      targetY      = Math.max(-1, Math.min(1, deltaY / (window.innerHeight * 0.35)));
+      if (!hasOrientationData) {
+        targetX = Math.max(-1, Math.min(1, deltaX / (window.innerWidth * 0.30)));
+        targetY = Math.max(-1, Math.min(1, deltaY / (window.innerHeight * 0.30)));
+      }
     }
   };
 
@@ -116,24 +121,28 @@ export function initHeroDepth() {
 
   // ─── 4. LOOP DE ANIMACIÓN RENDER ─────────────────────────────────────────────
   const loop = () => {
-    // Lerp suave (0.07)
-    currentX += (targetX - currentX) * 0.07;
-    currentY += (targetY - currentY) * 0.07;
+    // Lerp suave (0.08)
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
 
-    if (Math.abs(currentX) > 0.0005 || Math.abs(currentY) > 0.0005 || isInteracting) {
-      const rotY        = currentX * 3.5;
-      const rotX        = -currentY * 3.5;
-      const transXLeft  = currentX * (isMobile() ? 10 : 14);
-      const transYLeft  = currentY * (isMobile() ? 10 : 14);
-      const transXRight = currentX * (isMobile() ? 6  : 9);
-      const transYRight = currentY * (isMobile() ? 6  : 9);
+    // Agregar parallax de scroll sutil en móvil si el usuario se desplaza
+    const scrollParallaxY = isMobile() ? Math.min(0.8, (window.scrollY / window.innerHeight) * 0.6) : 0;
+    const effectiveY      = currentY + scrollParallaxY;
 
-      heroLeft.style.transform  = `perspective(1200px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(${transXLeft.toFixed(1)}px, ${transYLeft.toFixed(1)}px, ${isMobile() ? 15 : 40}px)`;
-      heroRight.style.transform = `perspective(1200px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(${transXRight.toFixed(1)}px, ${transYRight.toFixed(1)}px, ${isMobile() ? 10 : 30}px)`;
+    if (Math.abs(currentX) > 0.0005 || Math.abs(effectiveY) > 0.0005 || isInteracting) {
+      const rotY        = currentX * 3.8;
+      const rotX        = -effectiveY * 3.8;
+      const transXLeft  = currentX * (isMobile() ? 12 : 14);
+      const transYLeft  = effectiveY * (isMobile() ? 12 : 14);
+      const transXRight = currentX * (isMobile() ? 7  : 9);
+      const transYRight = effectiveY * (isMobile() ? 7  : 9);
+
+      heroLeft.style.transform  = `perspective(1200px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(${transXLeft.toFixed(1)}px, ${transYLeft.toFixed(1)}px, ${isMobile() ? 18 : 40}px)`;
+      heroRight.style.transform = `perspective(1200px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(${transXRight.toFixed(1)}px, ${transYRight.toFixed(1)}px, ${isMobile() ? 12 : 30}px)`;
 
       // Transmitir desplazamientos al Canvas atmosférico mediante CSS Variables
       document.documentElement.style.setProperty('--hero-tilt-x', currentX.toFixed(3));
-      document.documentElement.style.setProperty('--hero-tilt-y', currentY.toFixed(3));
+      document.documentElement.style.setProperty('--hero-tilt-y', effectiveY.toFixed(3));
     }
 
     requestAnimationFrame(loop);

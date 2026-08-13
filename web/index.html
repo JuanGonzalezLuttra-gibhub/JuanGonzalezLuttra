@@ -28,17 +28,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- Estilos — orden: tokens → base → ambient → componentes → secciones -->
-  <link rel="stylesheet" href="css/tokens.css?v=61">
-  <link rel="stylesheet" href="css/base.css?v=61">
-  <link rel="stylesheet" href="css/ambient.css?v=61">
-  <link rel="stylesheet" href="css/components.css?v=61">
-  <link rel="stylesheet" href="css/sections/hero.css?v=61">
-  <link rel="stylesheet" href="css/sections/work.css?v=61">
-  <link rel="stylesheet" href="css/sections/philosophy.css?v=61">
-  <link rel="stylesheet" href="css/sections/process.css?v=61">
-  <link rel="stylesheet" href="css/sections/capabilities.css?v=61">
-  <link rel="stylesheet" href="css/sections/about.css?v=61">
-  <link rel="stylesheet" href="css/sections/contact.css?v=61">
+  <link rel="stylesheet" href="css/tokens.css?v=62">
+  <link rel="stylesheet" href="css/base.css?v=62">
+  <link rel="stylesheet" href="css/ambient.css?v=62">
+  <link rel="stylesheet" href="css/components.css?v=62">
+  <link rel="stylesheet" href="css/sections/hero.css?v=62">
+  <link rel="stylesheet" href="css/sections/work.css?v=62">
+  <link rel="stylesheet" href="css/sections/philosophy.css?v=62">
+  <link rel="stylesheet" href="css/sections/process.css?v=62">
+  <link rel="stylesheet" href="css/sections/capabilities.css?v=62">
+  <link rel="stylesheet" href="css/sections/about.css?v=62">
+  <link rel="stylesheet" href="css/sections/contact.css?v=62">
 
   <!-- Datos estructurados JSON-LD -->
   <script type="application/ld+json">
@@ -132,8 +132,15 @@
 
     </div>
 
-    <!-- Menú mobile — pantalla completa -->
+    <!-- Menú mobile — pantalla completa con botón X de cierre -->
     <div class="nav__mobile" id="navMobile" aria-hidden="true" role="dialog" aria-label="Menú de navegación">
+      <button class="nav__mobile-close" id="navMobileClose" aria-label="Cerrar menú">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
       <a href="#trabajo"     aria-label="Ir a Proyectos">Proyectos</a>
       <a href="#filosofia"   aria-label="Ir a Filosofía">Filosofía</a>
       <a href="#proceso"     aria-label="Ir a Proceso">Proceso</a>
