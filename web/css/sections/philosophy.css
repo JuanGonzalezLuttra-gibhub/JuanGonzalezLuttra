@@ -381,7 +381,8 @@
 .philosophy__transition {
   height: clamp(80px, 12vw, 160px);
   background: linear-gradient(to bottom, var(--bg-philosophy), var(--bg-process));
-  margin: 0 calc(-1 * var(--container-padding));
+  width: 100%;
+  margin: 0;
 }
 
 

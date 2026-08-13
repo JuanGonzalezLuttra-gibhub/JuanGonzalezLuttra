@@ -30,6 +30,15 @@ body {
   cursor: none;
 }
 
+@media (max-width: 900px) {
+  html, body {
+    touch-action: pan-y; /* Previene lateralidad y gestos horizontales en móvil */
+  }
+  .process__sticky, .process__track {
+    touch-action: pan-x pan-y; /* Permite desplazamiento horizontal dentro de Proceso */
+  }
+}
+
 @media (pointer: fine) {
   *, *::before, *::after {
     cursor: none !important;

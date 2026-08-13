@@ -107,9 +107,10 @@ export function initCapabilitiesDeck() {
   }
 
   // ── Secuencia de entrada progresiva por scroll ──────────────────────────────
-  // Intro Sola -> Tarjeta 0 (Diseño) -> Tarjeta 1 (Desarrollo) -> Tarjeta 2 (Automatización) -> Tarjeta 3 (IA)
+  // ── Secuencia de entrada progresiva por scroll ──────────────────────────────
+  // Estado 0: Intro Sola (0 tarjetas) -> Tarjeta 0 (Diseño) -> Tarjeta 1 (Desarrollo) -> Tarjeta 2 (Automatización) -> Tarjeta 3 (IA)
 
-  const INTRO_BUFFER = 0.12; // 12% inicial exclusivo para mostrar la introducción sola (sin tarjetas)
+  const INTRO_BUFFER = 0.16; // 16% inicial exclusivo para mostrar el titular solo (ninguna tarjeta visible)
 
   function updateCards() {
     const sectionRect = section.getBoundingClientRect();
@@ -128,18 +129,26 @@ export function initCapabilitiesDeck() {
       triggerTitleEntrance();
     }
 
-    // El recorrido del mazo comienza en el momento en que el grid entra en zona de lectura sticky
-    const STICKY_TOP   = 90;
-    const scrollable   = Math.max(1, sectionH - vpH);
-    const scrolledIn   = Math.max(0, STICKY_TOP - sectionRect.top);
-    const progress     = Math.min(1, scrolledIn / scrollable);
+    const STICKY_TOP = 90;
+    const scrollable = Math.max(1, sectionH - vpH);
+    const scrolledIn = Math.max(0, STICKY_TOP - sectionRect.top);
+    const progress   = Math.min(1, scrolledIn / scrollable);
 
-    // Mapeo exacto de las 4 tarjetas (0: Diseño, 1: Desarrollo, 2: Automatización, 3: IA)
-    // Al entrar en la zona sticky, la primera tarjeta (Diseño) se activa inmediatamente junto al titular.
-    const activeIdx = Math.min(N - 1, Math.floor(progress * N));
+    // Determinar qué tarjeta está activa:
+    // Si progress < INTRO_BUFFER => activeIdx = -1 (SOLO TITULAR VISIBLE, NINGUNA TARJETA)
+    // Si progress >= INTRO_BUFFER => dividimos el rango en 4 tramos para las 4 tarjetas
+    let activeIdx = -1;
+
+    if (progress >= INTRO_BUFFER) {
+      const cardProgress = Math.min(1, (progress - INTRO_BUFFER) / (1 - INTRO_BUFFER));
+      activeIdx = Math.min(N - 1, Math.floor(cardProgress * N));
+    }
 
     cards.forEach((card, idx) => {
-      if (idx < activeIdx) {
+      if (activeIdx === -1) {
+        // INTRODUCCIÓN SOLA: ninguna tarjeta visible (todas ocultas esperando abajo)
+        card.classList.remove('is-active', 'is-passed');
+      } else if (idx < activeIdx) {
         // Tarjetas pasadas: apiladas en el mazo por encima
         card.classList.add('is-passed');
         card.classList.remove('is-active');
