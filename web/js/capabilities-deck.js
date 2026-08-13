@@ -116,38 +116,30 @@ export function initCapabilitiesDeck() {
     const sectionH    = section.offsetHeight;
     const vpH         = window.innerHeight;
 
-    // Progreso [0,1] del scroll dentro de la sección
-    const total      = sectionH - vpH;
-    const scrolledIn = Math.max(0, -sectionRect.top);
-    const progress   = total > 0 ? Math.min(1, scrolledIn / total) : 0;
-
     // Fuera de la sección por arriba
-    if (sectionRect.top > vpH * 0.90) {
+    if (sectionRect.top > vpH * 0.85) {
       resetTitleEntrance();
       cards.forEach(c => c.classList.remove('is-active', 'is-passed'));
       return;
     }
 
-    // Disparar animación de entrada del titular cuando la sección entra en zona visible
+    // Disparar animación de entrada del titular cuando la sección se aproxima
     if (sectionRect.top <= vpH * 0.75) {
       triggerTitleEntrance();
     }
 
-    // Determinar qué tarjeta está activa:
-    // Si progress < INTRO_BUFFER (0.12) => activeIdx = -1 (INTRODUCCIÓN SOLA, ninguna tarjeta visible)
-    // Si progress >= INTRO_BUFFER => dividimos el 88% restante en 4 tramos idénticos de 22% por tarjeta
-    let activeIdx = -1;
+    // El recorrido del mazo comienza en el momento en que el grid entra en zona de lectura sticky
+    const STICKY_TOP   = 90;
+    const scrollable   = Math.max(1, sectionH - vpH);
+    const scrolledIn   = Math.max(0, STICKY_TOP - sectionRect.top);
+    const progress     = Math.min(1, scrolledIn / scrollable);
 
-    if (progress >= INTRO_BUFFER) {
-      const cardProgress = Math.min(1, (progress - INTRO_BUFFER) / (1 - INTRO_BUFFER));
-      activeIdx = Math.min(N - 1, Math.floor(cardProgress * N));
-    }
+    // Mapeo exacto de las 4 tarjetas (0: Diseño, 1: Desarrollo, 2: Automatización, 3: IA)
+    // Al entrar en la zona sticky, la primera tarjeta (Diseño) se activa inmediatamente junto al titular.
+    const activeIdx = Math.min(N - 1, Math.floor(progress * N));
 
     cards.forEach((card, idx) => {
-      if (activeIdx === -1) {
-        // INTRODUCCIÓN SOLA: ninguna tarjeta visible (todas ocultas abajo)
-        card.classList.remove('is-active', 'is-passed');
-      } else if (idx < activeIdx) {
+      if (idx < activeIdx) {
         // Tarjetas pasadas: apiladas en el mazo por encima
         card.classList.add('is-passed');
         card.classList.remove('is-active');

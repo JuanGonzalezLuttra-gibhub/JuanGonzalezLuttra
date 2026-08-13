@@ -12,12 +12,14 @@
 .process {
   background: var(--bg-process);
   position: relative;
+  overflow: clip;
   transform: none !important;
 }
 
 .process__outer {
   height: 500vh;
   position: relative;
+  overflow: clip;
   transform: none !important;
 }
 

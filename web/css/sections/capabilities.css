@@ -15,11 +15,7 @@
   margin: 0 auto;
   padding-left:  var(--container-padding);
   padding-right: var(--container-padding);
-  /* La sección necesita altura para el scroll de las 4 tarjetas.
-     Usamos padding-top para el contenido inicial y padding-bottom
-     para el espacio de scroll (4 tarjetas × 100vh + 1vh de hold). */
-  padding-top: clamp(5rem, 10vw, 8rem);
-  /* padding-bottom lo pone el HTML inline para facilitar cálculos */
+  padding-top: clamp(3rem, 6vw, 5rem);
 }
 
 /* ---- GRID STICKY: SE QUEDA FIJO MIENTRAS LA SECCIÓN SCROLLEA ---- */
@@ -31,7 +27,7 @@
 
   /* El grid completo es sticky dentro de .capabilities__outer */
   position: sticky;
-  top: calc(var(--nav-height) + 2rem);
+  top: calc(var(--nav-height) + 1.5rem);
 }
 
 /* ============================================================

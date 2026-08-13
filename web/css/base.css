@@ -13,9 +13,8 @@
 html {
   scroll-behavior: auto;
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
-  max-width: 100%;
-  cursor: none; /* Cursor nativo oculto: se usa el cursor personalizado */
+  overflow-x: clip; /* Clip visual overflow without creating scroll container (preserves position:sticky) */
+  cursor: none;
 }
 
 body {
@@ -27,20 +26,13 @@ body {
   background-color: #000; /* Fallback negro puro */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  max-width: 100%;
   position: relative;
   cursor: none;
 }
 
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-  main {
-    overflow-x: hidden;
-    max-width: 100%;
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
   }
 }
 
