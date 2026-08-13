@@ -1,0 +1,315 @@
+/* ============================================================
+   ABOUT — La persona
+   Segunda iteración: fotografía en color desde el principio,
+   hover potencia brillo y saturación (nunca cambia a B&W),
+   halo dorado cálido como atmósfera, composición más dramática
+   ============================================================ */
+
+.about {
+  background: var(--bg-about);
+  padding: var(--section-padding) var(--container-padding);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Halo dorado muy tenue — único momento de calidez dominante */
+.about::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at 70% 30%,
+    var(--halo-gold-mid) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+/* Halo azul complementario */
+.about::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -5%;
+  width: 40%;
+  height: 40%;
+  background: radial-gradient(
+    ellipse at 20% 80%,
+    var(--halo-electric-soft) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ---- Grid principal ---- */
+.about__container {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(4rem, 8vw, 8rem);
+  align-items: start;
+}
+
+/* ---- Imagen de perfil ---- */
+.about__photo-wrapper {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  clip-path: circle(50% at 50% 50%);
+  -webkit-clip-path: circle(50% at 50% 50%);
+  /* Dimensión cuadrada para círculo perfecto */
+  aspect-ratio: 1 / 1;
+  max-width: min(100%, 460px);
+  margin: 0 auto;
+  /* Cursor de interacción */
+  cursor: pointer;
+  /* Sombra sutil que intensifica en hover */
+  box-shadow: 0 0 0px rgba(201, 168, 76, 0);
+  transition: box-shadow var(--duration-slow) var(--ease-out);
+}
+
+.about__photo-wrapper:hover {
+  box-shadow:
+    0 0 40px rgba(201, 168, 76, 0.30),
+    0 0 80px rgba(37, 99, 255, 0.15);
+}
+
+.about__photo {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center 18%;  /* centra el rostro perfectamente */
+  display: block;
+  border-radius: 50%;
+  transform: scale(1.08);
+  /* Estado normal: ligeramente ajustado */
+  filter: brightness(0.92) saturate(1.0) contrast(1.04);
+  transition:
+    filter    0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+}
+
+/* Hover: brillo pronunciado — efecto glow sobre la imagen */
+.about__photo-wrapper:hover .about__photo {
+  filter: brightness(1.20) saturate(1.15) contrast(1.05);
+  transform: scale(1.12);
+}
+
+
+
+/* Sin borde decorativo — la foto ya tiene forma circular nativa */
+/* El overflow:hidden del wrapper es suficiente para recortar el círculo */
+
+/* ---- Firma JGL decorativa de fondo ---- */
+.about__signature {
+  position: absolute;
+  bottom: -0.1em;
+  left: -0.2em;
+  font-size: clamp(6rem, 14vw, 12rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201, 168, 76, 0.07);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---- Contenido de texto ---- */
+.about__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-top: var(--space-4);
+}
+
+.about__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.about__name {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.035em;
+  color: var(--color-text-primary);
+  line-height: 1.05;
+}
+
+.about__title {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-gold);
+  letter-spacing: 0.02em;
+}
+
+.about__bio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.about__bio p {
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+}
+
+.about__bio p:first-child {
+  font-size: var(--text-large);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+/* ---- Datos / Facts ---- */
+.about__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4) var(--space-6);
+  padding-top: var(--space-6);
+  border-top: none;
+}
+
+.about__fact-label {
+  display: block;
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: var(--space-1);
+}
+
+.about__fact-value {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gold);
+}
+
+/* ---- Animación de entrada visual de La Persona ---- */
+[data-about-stagger] {
+  opacity: 0;
+  transform: translateY(38px);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.about__photo-wrapper[data-about-stagger] {
+  opacity: 0;
+  transform: scale(0.95) translateY(24px);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about.is-visible .about__header[data-about-stagger] {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0ms;
+}
+
+.about.is-visible .about__bio[data-about-stagger] {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 160ms;
+}
+
+.about.is-visible .about__photo-wrapper[data-about-stagger] {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition-delay: 320ms;
+}
+
+.about.is-visible .about__facts[data-about-stagger] {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 480ms;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .about__container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about__photo-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
+    touch-action: manipulation;
+  }
+
+  .about__signature { display: none; }
+
+  /* Secuencia móvil: Fotografía primero → Encabezado → Bio → Datos */
+  .about__photo-wrapper[data-about-stagger] {
+    opacity: 0;
+    transform: scale(0.94) translateY(24px);
+    transition:
+      opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 300ms ease,
+      box-shadow 300ms ease;
+  }
+
+  .about.is-visible .about__photo-wrapper[data-about-stagger] {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition-delay: 0ms;
+  }
+
+  .about.is-visible .about__header[data-about-stagger] {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 160ms;
+  }
+
+  .about.is-visible .about__bio[data-about-stagger] {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 300ms;
+  }
+
+  .about.is-visible .about__facts[data-about-stagger] {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 440ms;
+  }
+
+  /* Microinteracción de brillo al tocar la fotografía */
+  .about__photo-wrapper.is-touched,
+  .about__photo-wrapper:active {
+    transform: scale(0.97) !important;
+    box-shadow: 0 0 45px rgba(201, 168, 76, 0.40) !important;
+    filter: brightness(1.15) saturate(1.1) !important;
+    transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .about__facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-about-stagger],
+  .about__photo-wrapper[data-about-stagger] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,42 @@
+/* ============================================================
+   AMBIENT — Fondo de vídeo cinematográfico
+   
+   Jerarquía de capas:
+     1. video.ambient__video   — El universo visual (fijo, full-screen)
+     2. div.ambient__overlay   — Velo oscuro muy sutil para legibilidad
+     3. [Contenido de la web]  — Flota sobre el universo visual
+   
+   El vídeo nunca se reinicia al cambiar de sección porque es
+   position:fixed y vive fuera del flujo del documento.
+   El overlay garantiza contraste sin tapar la atmósfera.
+   ============================================================ */
+
+/* ---- Contenedor fijo — detrás de todo ---- */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000;   /* fallback mientras carga el vídeo */
+}
+
+/* ---- Vídeo de fondo ---- */
+.ambient__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* siempre cubre todo el viewport */
+  object-position: center center;
+}
+
+/* ---- Overlay de legibilidad ----
+   Negro muy sutil. Suficiente para garantizar contraste del texto
+   sin tapar la atmósfera del vídeo.
+   Ajustar opacity si se necesita más o menos contraste. */
+.ambient__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+}

@@ -1,0 +1,510 @@
+/* ============================================================
+   WORK — Casos de estudio
+   Segunda iteración: article completamente clicable,
+   visuales más profundos, número de caso como elemento decorativo
+   ============================================================ */
+
+.work {
+  position: relative;
+  background: var(--bg-work);
+  padding-top: clamp(4rem, 7vw, 7rem);
+  padding-bottom: 0;
+}
+
+.work__header {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  margin-bottom: clamp(2.5rem, 4vw, 4rem);
+}
+
+/* ---- Separador sección Heroes → Work ---- */
+.work__intro-rule {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.work__intro-rule::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--color-gold);
+  opacity: 0.6;
+}
+
+/* ---- Article (case) ---- */
+.case {
+  position: relative;
+  border-top: none;
+  cursor: default;
+  transition: background-color var(--duration-slow) var(--ease-out);
+}
+
+/* Link del card completo desactivado */
+.case__full-link {
+  display: none;
+}
+
+.case:last-child {
+  border-bottom: none;
+}
+
+/* Hover: halo de temperatura */
+.case::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(37, 99, 255, 0.03) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.case:hover::before { opacity: 1; }
+
+/* Número decorativo de fondo */
+.case__bg-number {
+  position: absolute;
+  top: 50%;
+  right: var(--container-padding);
+  transform: translateY(-50%);
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  transition: -webkit-text-stroke-color var(--duration-slow) var(--ease-out),
+              opacity var(--duration-slow) var(--ease-out);
+  z-index: 0;
+}
+
+.case:hover .case__bg-number {
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.07);
+}
+
+/* ---- Grid interno del case ---- */
+.case__container {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: clamp(5rem, 9vw, 8.5rem) var(--container-padding);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3.5rem, 7vw, 7rem);
+  align-items: center;
+}
+
+/* Cases pares: visual a la izquierda, texto a la derecha */
+.case:nth-child(even) .case__container {
+  direction: rtl;
+}
+.case:nth-child(even) .case__container > * {
+  direction: ltr;
+}
+
+/* ---- Número y categoría ---- */
+.case__meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.case__number {
+  display: none;
+}
+
+.case__category {
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+}
+
+/* ---- Título ---- */
+.case__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+}
+
+/* ---- Descripción ---- */
+.case__description {
+  font-size: var(--text-lead);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  max-width: 44ch;
+  margin-bottom: var(--space-8);
+}
+
+/* ---- Transformaciones ---- */
+.case__transforms {
+  margin-bottom: var(--space-8);
+}
+
+.case__transforms-label {
+  display: block;
+  font-size: var(--text-micro);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.case__transforms-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.case__transforms-list li {
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.case__transforms-list li::before {
+  content: '→';
+  color: var(--color-gold);
+  flex-shrink: 0;
+}
+
+/* ---- Stack Técnico discreto (metadato secundario) ---- */
+.case__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  opacity: 0.45;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.case:hover .case__tech {
+  opacity: 0.8;
+}
+
+.case__tech .pill {
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.65rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+/* ---- CTA ver proyecto ---- */
+.case__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--ease-out),
+              gap   var(--duration-fast) var(--ease-out);
+}
+
+.case__cta:hover {
+  color: var(--color-text-primary);
+  gap: var(--space-3);
+}
+
+.case__cta svg {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.case__cta:hover svg { transform: translateX(4px); }
+
+/* ---- Animación escalonada de narrativa por etapas (Pausada 1.5 - 2s, Repetible) ---- */
+.case__category,
+.case__title,
+.case__visual,
+.case__description,
+.case__transforms,
+.case__tech {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Etapa 1: Categoría y Nombre del proyecto (Aparecen primero al entrar) */
+.case.is-visible .case__category {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0ms;
+}
+
+.case.is-visible .case__title {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 180ms;
+}
+
+/* Etapa 2: Captura del proyecto (Cobra protagonismo visual en segundo lugar) */
+.case.is-visible .case__visual {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 650ms;
+  transition-duration: 1000ms;
+}
+
+/* Etapa 3: Descripción y Transformaciones (Cierran la narrativa en tercer lugar) */
+.case.is-visible .case__description {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1250ms;
+}
+
+.case.is-visible .case__transforms,
+.case.is-visible .case__tech {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1400ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case__category,
+  .case__title,
+  .case__visual,
+  .case__description,
+  .case__transforms,
+  .case__tech {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- Etiqueta editorial "REDISEÑO" / "DESARROLLO DESDE CERO" ---- */
+/* Anotación discreta en dorado. Controlada 100% por JS.             */
+.case__editorial-label {
+  position: absolute;
+  bottom: clamp(0.875rem, 2vw, 1.25rem);
+  right:  clamp(0.875rem, 2vw, 1.25rem);
+  z-index: 10;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---- Etiqueta "Antes" — visible durante la captura original ---- */
+/* Aparece en la esquina superior izquierda mientras se muestra      */
+/* la web antigua. Desaparece antes del flash de transformación.     */
+.case__before-tag {
+  position: absolute;
+  top:  clamp(0.75rem, 1.5vw, 1rem);
+  left: clamp(0.75rem, 1.5vw, 1rem);
+  z-index: 12;
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.3em 0.7em;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---- Flash de transformación — destello dorado entre antes y después ---- */
+/* El JS lo activa brevemente en el clímax de la transición.               */
+.case__flash {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(220, 185, 100, 0.55) 0%,
+    rgba(201, 168, 76, 0.30) 35%,
+    rgba(180, 140, 50, 0.10) 65%,
+    transparent 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ---- Visual con captura real del proyecto (Único elemento clicable) ---- */
+.case__visual {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  /* Proporción real de las capturas 1920×912 ≈ 19:9 */
+  aspect-ratio: 19 / 9;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 255, 255, 0.03);
+  background: rgba(10, 10, 15, 0.8);
+  transition: transform var(--duration-slow) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-slow) var(--ease-out),
+              opacity 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.case.is-visible:hover .case__visual,
+.case__visual:hover {
+  transform: translateY(-4px) scale(1.015);
+  border-color: rgba(201, 168, 76, 0.35);
+  box-shadow: 0 28px 55px rgba(0, 0, 0, 0.6), 0 0 35px rgba(201, 168, 76, 0.15);
+}
+
+/* ---- Estructura de la captura preparada para Antes → Después ---- */
+.case__comparison {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.case__comparison-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.case__comparison-layer--after {
+  z-index: 1;
+}
+
+.case__comparison-layer--before {
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  /* La transición es controlada 100% por JS — sin CSS transition aquí */
+}
+
+.case__img {
+  width: 100%;
+  height: 100%;
+  /* contain: muestra la interfaz completa sin recortar */
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-out),
+              filter var(--duration-slow) var(--ease-out);
+  will-change: transform;
+}
+
+.case__visual:hover .case__img {
+  transform: scale(1.04);
+  filter: brightness(1.08);
+}
+
+/* ---- Transición inferior desactivada ---- */
+.work__transition {
+  display: none;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .case__container {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  .case:nth-child(even) .case__container { direction: ltr; }
+  .case__visual { max-width: 540px; }
+  .case__bg-number { display: none; }
+}
+
+@media (max-width: 900px) {
+  .case__container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: clamp(3.5rem, 8vw, 5.5rem) var(--container-padding);
+  }
+
+  .case__meta {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .case__title {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 750ms cubic-bezier(0.16, 1, 0.3, 1), transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .case__visual {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    transition: opacity 850ms cubic-bezier(0.16, 1, 0.3, 1), transform 850ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms ease;
+    touch-action: manipulation;
+  }
+
+  .case__description {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 750ms cubic-bezier(0.16, 1, 0.3, 1), transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .case.is-mobile-visible .case__meta {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0ms;
+  }
+
+  .case.is-mobile-visible .case__title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 120ms;
+  }
+
+  .case.is-mobile-visible .case__visual {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 240ms;
+  }
+
+  .case.is-mobile-visible .case__description {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 380ms;
+  }
+
+  /* Tap / Active feedback en la imagen en móvil */
+  .case__visual:active {
+    transform: scale(0.98) !important;
+    filter: brightness(1.12) !important;
+    box-shadow: 0 10px 30px rgba(37, 99, 255, 0.35) !important;
+    transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .case__container { padding-top: 3rem; padding-bottom: 3rem; }
+}

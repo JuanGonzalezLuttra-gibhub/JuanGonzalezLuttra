@@ -1,0 +1,289 @@
+/* ============================================================
+   CAPABILITIES v4.0 — Grid sticky completo
+   El capabilities__grid tiene position:sticky y se mantiene
+   fijo mientras la sección (que tiene padding-bottom enorme) scrollea.
+   El JS solo gestiona qué tarjeta está activa.
+   ============================================================ */
+
+.capabilities {
+  background: var(--bg-capabilities);
+  position: relative;
+}
+
+.capabilities__outer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left:  var(--container-padding);
+  padding-right: var(--container-padding);
+  /* La sección necesita altura para el scroll de las 4 tarjetas.
+     Usamos padding-top para el contenido inicial y padding-bottom
+     para el espacio de scroll (4 tarjetas × 100vh + 1vh de hold). */
+  padding-top: clamp(5rem, 10vw, 8rem);
+  /* padding-bottom lo pone el HTML inline para facilitar cálculos */
+}
+
+/* ---- GRID STICKY: SE QUEDA FIJO MIENTRAS LA SECCIÓN SCROLLEA ---- */
+.capabilities__grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(340px, 440px);
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: start;
+
+  /* El grid completo es sticky dentro de .capabilities__outer */
+  position: sticky;
+  top: calc(var(--nav-height) + 2rem);
+}
+
+/* ============================================================
+   COLUMNA IZQUIERDA — TITULAR (ANIMACIÓN DE ENTRADA PROTAGONISTA)
+   ============================================================ */
+.capabilities__sticky-col {
+  opacity: 0;
+  transform: translateY(45px) scale(0.97);
+  transition:
+    opacity 950ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 950ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.capabilities__sticky-col.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.capabilities__sticky-inner {
+  max-width: 540px;
+}
+
+.capabilities__title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.capabilities__title span:first-child {
+  font-size: clamp(1.8rem, 3.6vw, 3.2rem);
+  font-weight: var(--font-weight-light);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-text-secondary);
+}
+
+.capabilities__title-gold {
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--color-gold);
+}
+
+/* Cursor de la máquina de escribir */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--color-gold);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink-cursor 0.75s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ============================================================
+   COLUMNA DERECHA — DECK DE TARJETAS
+   ============================================================ */
+
+.capabilities__deck-col {
+  position: relative;
+}
+
+/* Wrapper para las tarjetas absolutas */
+.capabilities__deck-wrapper {
+  position: relative;
+  min-height: 520px;
+}
+
+/* ---- TARJETA INDIVIDUAL ---- */
+.capability-card {
+  position: absolute;
+  inset: 0;       /* top:0, left:0, right:0, bottom:0 — se solapan */
+  bottom: auto;   /* solo top:0 y left/right; height viene de min-height */
+  min-height: 480px;
+  border-radius: 24px;
+  padding: clamp(2rem, 3.5vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+
+  background: rgba(10, 14, 23, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  /* Estado por defecto: oculta detrás esperando */
+  opacity: 0;
+  transform: translateY(60px) scale(0.96);
+  transition:
+    opacity 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 400ms ease,
+    box-shadow 400ms ease,
+    filter 400ms ease;
+  user-select: none;
+}
+
+/* ---- ESTADO ACTIVO ---- */
+.capability-card.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  z-index: 20;
+}
+
+.capability-card:nth-child(odd).is-active {
+  border-color: rgba(37, 99, 255, 0.55);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 45px rgba(37, 99, 255, 0.20),
+    inset 0 0 30px rgba(37, 99, 255, 0.08);
+}
+
+.capability-card:nth-child(even).is-active {
+  border-color: rgba(201, 168, 76, 0.55);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 45px rgba(201, 168, 76, 0.20),
+    inset 0 0 30px rgba(201, 168, 76, 0.08);
+}
+
+/* ---- ESTADO PASADO: asoma por encima como baraja apilada ---- */
+.capability-card.is-passed {
+  opacity: 0.82;
+  filter: brightness(0.68);
+}
+
+/* Offset para que cada tarjeta pasada asome por encima de la activa */
+.capability-card[data-cap-card="0"].is-passed { z-index: 11; transform: translateY(-48px) scale(0.98); }
+.capability-card[data-cap-card="1"].is-passed { z-index: 12; transform: translateY(-32px) scale(0.99); }
+.capability-card[data-cap-card="2"].is-passed { z-index: 13; transform: translateY(-16px) scale(1.00); }
+
+/* ---- CABECERA ---- */
+.capability-card__header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.capability-card__badge {
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.capability-card:nth-child(odd)  .capability-card__badge { color: var(--color-electric); }
+.capability-card:nth-child(even) .capability-card__badge { color: var(--color-gold); }
+
+/* ---- CUERPO ---- */
+.capability-card__body {
+  margin-bottom: 1.5rem;
+}
+
+.capability-card__title {
+  font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.capability-card__desc {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+/* ---- TAGS ---- */
+.capability-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.capability-card__tags li {
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 100px;
+  padding: 0.3rem 0.8rem;
+  transition:
+    border-color 300ms ease,
+    color 300ms ease,
+    background 300ms ease;
+}
+
+.capability-card.is-active .capability-card__tags li {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--color-text-secondary);
+}
+
+.capability-card:nth-child(odd).is-active .capability-card__tags li:hover {
+  border-color: rgba(37, 99, 255, 0.4);
+  color: var(--color-electric);
+  background: rgba(37, 99, 255, 0.08);
+}
+
+.capability-card:nth-child(even).is-active .capability-card__tags li:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  color: var(--color-gold);
+  background: rgba(201, 168, 76, 0.08);
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET & MOBILE
+   ============================================================ */
+@media (max-width: 900px) {
+  .capabilities__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    position: sticky;
+    top: calc(var(--nav-height) + 1rem);
+  }
+
+  .capabilities__sticky-inner {
+    max-width: 100%;
+  }
+
+  .capabilities__deck-wrapper {
+    position: relative;
+    min-height: 480px;
+  }
+
+  .capability-card {
+    position: absolute;
+    inset: 0;
+    min-height: 460px;
+    padding: clamp(1.5rem, 5vw, 2.25rem);
+    border-radius: 20px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .capability-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>Juan González Luttra — Ecosistemas Digitales</title>
+  <meta name="description" content="Combino diseño, experiencia de usuario, automatización e inteligencia artificial para crear experiencias digitales más eficientes, intuitivas y preparadas para crecer.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://juangonzalezluttra.com">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Juan González Luttra — Ecosistemas Digitales">
+  <meta property="og:description" content="Combino diseño, experiencia de usuario, automatización e inteligencia artificial para crear experiencias digitales más eficientes, intuitivas y preparadas para crecer.">
+  <meta property="og:url"         content="https://juangonzalezluttra.com">
+  <meta property="og:image"       content="assets/profile.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Juan González Luttra — Ecosistemas Digitales">
+  <meta name="twitter:description" content="Combino diseño, experiencia de usuario, automatización e inteligencia artificial para crear experiencias digitales más eficientes, intuitivas y preparadas para crecer.">
+
+  <!-- Fuente Geist — Brand Book §8 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Estilos — orden: tokens → base → ambient → componentes → secciones -->
+  <link rel="stylesheet" href="css/tokens.css?v=27">
+  <link rel="stylesheet" href="css/base.css?v=27">
+  <link rel="stylesheet" href="css/ambient.css?v=27">
+  <link rel="stylesheet" href="css/components.css?v=27">
+  <link rel="stylesheet" href="css/sections/hero.css?v=27">
+  <link rel="stylesheet" href="css/sections/work.css?v=27">
+  <link rel="stylesheet" href="css/sections/philosophy.css?v=27">
+  <link rel="stylesheet" href="css/sections/process.css?v=27">
+  <link rel="stylesheet" href="css/sections/capabilities.css?v=27">
+  <link rel="stylesheet" href="css/sections/about.css?v=27">
+  <link rel="stylesheet" href="css/sections/contact.css?v=27">
+
+  <!-- Datos estructurados JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Juan González Luttra",
+    "jobTitle": "Diseñador y Desarrollador Frontend",
+    "description": "Especializado en crear ecosistemas digitales donde diseño, tecnología, automatización e inteligencia artificial trabajan de forma integrada.",
+    "url": "https://juangonzalezluttra.com",
+    "email": "hola@juangonzalezluttra.com",
+    "sameAs": ["https://linkedin.com/in/juangonzalezluttra"]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ============================================================
+       AMBIENT — Universo visual cinematográfico
+       
+       Jerarquía:
+         1. video.ambient__video   → el universo visual (fijo, full-screen)
+         2. div.ambient__overlay   → velo oscuro sutil para legibilidad
+         3. Contenido de la web   → flota sobre el universo
+       
+       El vídeo permanece continuo durante TODA la experiencia.
+       No se reinicia al cambiar de sección (es position:fixed,
+       vive fuera del flujo del documento).
+       ============================================================ -->
+  <div class="ambient" aria-hidden="true">
+    <video
+      class="ambient__video"
+      id="ambientVideo"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      disablepictureinpicture
+      aria-hidden="true"
+    >
+      <source src="assets/bg.mp4" type="video/mp4">
+    </video>
+    <div class="ambient__overlay"></div>
+  </div>
+
+  <!-- Grain texture — capa fija de textura sobre toda la experiencia -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Barra de progreso de scroll — electric → gold -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- Cursor personalizado — solo visible en dispositivos con puntero fino -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor__dot"></div>
+  </div>
+
+  <!-- Transport overlay — velo cinemático para saltos de sección instantáneos -->
+  <div class="transport-overlay" id="transportOverlay" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       NAVEGACIÓN
+       ============================================================ -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Navegación principal">
+    <div class="nav__container">
+
+      <a href="#" class="nav__logo" aria-label="Juan González Luttra — Inicio">
+        <img src="assets/logo.jpg" alt="Juan González Luttra" width="44" height="44">
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="#trabajo"     class="nav__link">Proyectos</a></li>
+        <li><a href="#filosofia"   class="nav__link">Filosofía</a></li>
+        <li><a href="#proceso"     class="nav__link">Proceso</a></li>
+        <li><a href="#capacidades" class="nav__link">Capacidades</a></li>
+        <li><a href="#sobre-mi"    class="nav__link">La persona</a></li>
+        <li><a href="https://wa.me/34727762434" target="_blank" rel="noopener noreferrer" class="nav__link nav__link--cta">Contactar</a></li>
+      </ul>
+
+      <!-- Mobile burger -->
+      <button
+        class="nav__burger"
+        id="navBurger"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="navMobile"
+      >
+        <span class="nav__burger-line"></span>
+        <span class="nav__burger-line"></span>
+      </button>
+
+    </div>
+
+    <!-- Menú mobile — pantalla completa -->
+    <div class="nav__mobile" id="navMobile" aria-hidden="true" role="dialog" aria-label="Menú de navegación">
+      <a href="#trabajo"     aria-label="Ir a Proyectos">Proyectos</a>
+      <a href="#filosofia"   aria-label="Ir a Filosofía">Filosofía</a>
+      <a href="#proceso"     aria-label="Ir a Proceso">Proceso</a>
+      <a href="#capacidades" aria-label="Ir a Capacidades">Capacidades</a>
+      <a href="#sobre-mi"    aria-label="Ir a La persona">La persona</a>
+      <a href="https://wa.me/34727762434" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">Contactar</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================================
+         SECCIÓN 1 — HERO — Blueprint oficial definitivo
+         Fondo: gestionado por ambient.js (Canvas multipasa, fijo).
+         Columna izq: eyebrow · heading 4 líneas · scroll indicator
+         Columna der: texto descriptivo · separador · statement · CTAs
+         ============================================================ -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
+
+      <!-- ---- GRID DE DOS COLUMNAS ---- -->
+      <div class="hero__grid">
+
+        <!-- Columna izquierda: eyebrow · heading 4 líneas · scroll -->
+        <div class="hero__left">
+
+          <p class="hero__eyebrow" aria-label="Ecosistemas Digitales  Diseño  Desarrollo  IA">
+            Ecosistemas Digitales &nbsp; Diseño &nbsp; Desarrollo &nbsp; IA
+          </p>
+
+          <h1 class="hero__heading" id="hero-heading">
+            <span class="hero__heading-line hero__heading-white">Transformo</span>
+            <span class="hero__heading-line hero__heading-white">proyectos en</span>
+            <span class="hero__heading-line hero__heading-gold">ecosistemas</span>
+            <span class="hero__heading-line hero__heading-gold">digitales</span>
+          </h1>
+
+          <div class="hero__scroll-indicator" aria-hidden="true">
+            <span class="hero__scroll-label">Scroll para explorar</span>
+            <div class="hero__scroll-track"></div>
+          </div>
+
+        </div>
+
+        <!-- Columna derecha: composición editorial completa
+             Estructura del blueprint:
+             1. Texto descriptivo gris
+             2. Separador dorado
+             3. Statement blanco + dorado
+             4. CTAs -->
+        <div class="hero__right">
+
+          <p class="hero__subtitle">
+            Combino diseño, experiencia de usuario,
+            automatización e inteligencia artificial
+            para crear experiencias digitales más
+            eficientes, intuitivas y preparadas para crecer.
+          </p>
+
+          <p class="hero__statement">
+            El futuro no necesita más páginas web.
+            <span class="hero__statement-gold">Necesita mejores experiencias digitales.</span>
+          </p>
+
+          <div class="hero__ctas">
+            <a href="https://wa.me/34727762434" target="_blank" rel="noopener noreferrer" class="hero__btn hero__btn--primary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 2.159.685 4.158 1.854 5.795L2.5 21.5l3.844-1.316C7.901 21.282 9.878 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.877 0-3.626-.546-5.1-1.487l-.366-.231-2.274.779.791-2.208-.255-.383C3.819 15.02 3.25 13.57 3.25 12c0-4.825 3.925-8.75 8.75-8.75s8.75 3.925 8.75 8.75S16.825 20 12 20z"/>
+              </svg>
+              Contactar
+            </a>
+            <a href="#trabajo" class="hero__btn hero__btn--ghost">
+              Ver proyectos
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECCIÓN 2 — CASOS DE ESTUDIO
+         Cada artículo es completamente clicable (full-link pattern).
+         El visual abstracto y el número decorativo dan identidad a cada caso.
+         ============================================================ -->
+    <section class="work" id="trabajo" aria-label="Proyectos">
+
+      <!-- 01 — Neodentis -->
+      <article
+        class="case"
+        id="case-neodentis"
+        aria-labelledby="case-neodentis-title"
+        data-has-before="true"
+        data-narrative-label="Rediseño"
+      >
+        <div class="case__container">
+          <div class="case__content">
+            <div class="case__meta">
+              <span class="case__category">Salud</span>
+            </div>
+            <h3 class="case__title" id="case-neodentis-title">Neodentis</h3>
+            <p class="case__description">
+              Clínica dental con más de 20 años de trayectoria cuya presencia digital
+              no reflejaba su autoridad real ni transmitía confianza al paciente.
+            </p>
+            <div class="case__transforms">
+              <span class="case__transforms-label">Transformaciones</span>
+              <ul class="case__transforms-list" role="list">
+                <li>De web corporativa genérica a experiencia centrada en la confianza</li>
+                <li>De formularios tradicionales a captación progresiva sin fricción</li>
+                <li>De autoridad supuesta a autoridad demostrada con casos clínicos reales</li>
+              </ul>
+            </div>
+            <div class="case__tech" aria-label="Tecnologías utilizadas">
+              <span class="pill">Next.js</span>
+              <span class="pill">React</span>
+              <span class="pill">TypeScript</span>
+              <span class="pill">Framer Motion</span>
+              <span class="pill">IA</span>
+            </div>
+          </div>
+
+          <a
+            class="case__visual case__visual--neodentis"
+            href="https://neodentis.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir proyecto Neodentis en nueva pestaña"
+          >
+            <div class="case__comparison">
+              <div class="case__comparison-layer case__comparison-layer--after">
+                <img
+                  src="assets/projects/neodentis.png"
+                  alt="Captura del diseño final del proyecto Neodentis"
+                  class="case__img case__img--after"
+                  loading="lazy"
+                >
+              </div>
+              <div class="case__comparison-layer case__comparison-layer--before" aria-hidden="true">
+                <img
+                  src="assets/projects/neodentis-before.png"
+                  alt="Captura del diseño original del proyecto Neodentis"
+                  class="case__img case__img--before"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+            <span class="case__editorial-label" aria-hidden="true">Rediseño</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 02 — Mihauss -->
+      <article
+        class="case"
+        id="case-mihauss"
+        aria-labelledby="case-mihauss-title"
+        data-has-before="true"
+        data-narrative-label="Rediseño"
+      >
+        <div class="case__container">
+
+          <a
+            class="case__visual case__visual--mihauss"
+            href="https://mihauuss-casas-prefabricadas-green.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir proyecto Mihauss en nueva pestaña"
+          >
+            <div class="case__comparison">
+              <div class="case__comparison-layer case__comparison-layer--after">
+                <img
+                  src="assets/projects/mihauss.png"
+                  alt="Captura del diseño final del proyecto Mihauss"
+                  class="case__img case__img--after"
+                  loading="lazy"
+                >
+              </div>
+              <div class="case__comparison-layer case__comparison-layer--before" aria-hidden="true">
+                <img
+                  src="assets/projects/mihauss-before.png"
+                  alt="Captura del diseño original del proyecto Mihauss"
+                  class="case__img case__img--before"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+            <span class="case__editorial-label" aria-hidden="true">Rediseño</span>
+          </a>
+
+          <div class="case__content">
+            <div class="case__meta">
+              <span class="case__category">Arquitectura · Construcción</span>
+            </div>
+            <h3 class="case__title" id="case-mihauss-title">Mihauss</h3>
+            <p class="case__description">
+              Empresa constructora con obras de alta gama que necesitaba transmitir solidez,
+              método propio y criterio arquitectónico.
+            </p>
+            <div class="case__transforms">
+              <span class="case__transforms-label">Transformaciones</span>
+              <ul class="case__transforms-list" role="list">
+                <li>De catálogo de obras a narrativa de empresa con criterio propio</li>
+                <li>De contacto genérico a flujo que cualifica la tipología de proyecto</li>
+                <li>De imagen convencional a experiencia interactiva que acelera la decisión</li>
+              </ul>
+            </div>
+            <div class="case__tech" aria-label="Tecnologías utilizadas">
+              <span class="pill">HTML5</span>
+              <span class="pill">CSS3</span>
+              <span class="pill">JavaScript</span>
+              <span class="pill">Vercel</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 — Luxor -->
+      <article
+        class="case"
+        id="case-luxor"
+        aria-labelledby="case-luxor-title"
+        data-has-before="false"
+        data-narrative-label="Desarrollo desde cero"
+      >
+        <div class="case__container">
+          <div class="case__content">
+            <div class="case__meta">
+              <span class="case__category">Automoción</span>
+            </div>
+            <h3 class="case__title" id="case-luxor-title">Luxor</h3>
+            <p class="case__description">
+              Concesionario de vehículos de alta gama que requería una plataforma digital
+              acorde a la categoría de sus productos y al nivel de su showroom.
+            </p>
+            <div class="case__transforms">
+              <span class="case__transforms-label">Transformaciones</span>
+              <ul class="case__transforms-list" role="list">
+                <li>De catálogo genérico a experiencia de selección de vehículo premium</li>
+                <li>De contacto directo a proceso de cualificación previa a la visita</li>
+                <li>De concesionario convencional a marca digital con identidad de lujo</li>
+              </ul>
+            </div>
+            <div class="case__tech" aria-label="Tecnologías utilizadas">
+              <span class="pill">HTML5</span>
+              <span class="pill">CSS3</span>
+              <span class="pill">JavaScript</span>
+              <span class="pill">Vercel</span>
+            </div>
+          </div>
+
+          <a
+            class="case__visual case__visual--luxor"
+            href="https://luxor-kohl.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir proyecto Luxor en nueva pestaña"
+          >
+            <div class="case__comparison">
+              <div class="case__comparison-layer case__comparison-layer--after">
+                <img
+                  src="assets/projects/luxor.png"
+                  alt="Captura del diseño final del proyecto Luxor"
+                  class="case__img case__img--after"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+            <span class="case__editorial-label" aria-hidden="true">Desarrollo desde cero</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 04 — Matarrania -->
+      <article
+        class="case"
+        id="case-matarrania"
+        aria-labelledby="case-matarrania-title"
+        data-has-before="true"
+        data-narrative-label="Rediseño"
+      >
+        <div class="case__container">
+
+          <a
+            class="case__visual case__visual--matarrania"
+            href="https://matarrania.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir proyecto Matarrania en nueva pestaña"
+          >
+            <div class="case__comparison">
+              <div class="case__comparison-layer case__comparison-layer--after">
+                <img
+                  src="assets/projects/matarrania.png"
+                  alt="Captura del diseño final del proyecto Matarrania"
+                  class="case__img case__img--after"
+                  loading="lazy"
+                >
+              </div>
+              <div class="case__comparison-layer case__comparison-layer--before" aria-hidden="true">
+                <img
+                  src="assets/projects/matarrania-before.png"
+                  alt="Captura del diseño original del proyecto Matarrania"
+                  class="case__img case__img--before"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+            <span class="case__editorial-label" aria-hidden="true">Rediseño</span>
+          </a>
+
+          <div class="case__content">
+            <div class="case__meta">
+              <span class="case__category">Cosmética · Ritual</span>
+            </div>
+            <h3 class="case__title" id="case-matarrania-title">Matarrania</h3>
+            <p class="case__description">
+              Cosmética ecológica y natural cuyos productos excepcionales no lograban
+              transmitir su origen ni su filosofía en el canal digital.
+            </p>
+            <div class="case__transforms">
+              <span class="case__transforms-label">Transformaciones</span>
+              <ul class="case__transforms-list" role="list">
+                <li>De tienda transaccional a experiencia de marca con narrativa de origen</li>
+                <li>De catálogo de productos a ritual de compra guiado y sensorial</li>
+                <li>De imagen convencional a ecosistema que convierte clientes en embajadores</li>
+              </ul>
+            </div>
+            <div class="case__tech" aria-label="Tecnologías utilizadas">
+              <span class="pill">HTML5</span>
+              <span class="pill">CSS3</span>
+              <span class="pill">JavaScript</span>
+              <span class="pill">Shopify</span>
+              <span class="pill">Vercel</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 — Clavería Abogados -->
+      <article
+        class="case"
+        id="case-claveria"
+        aria-labelledby="case-claveria-title"
+        data-has-before="true"
+        data-narrative-label="Rediseño"
+      >
+        <div class="case__container">
+          <div class="case__content">
+            <div class="case__meta">
+              <span class="case__category">Legal</span>
+            </div>
+            <h3 class="case__title" id="case-claveria-title">Clavería Abogados</h3>
+            <p class="case__description">
+              Despacho de abogados de amplia trayectoria que necesitaba transmitir el máximo
+              rigor profesional sin resultar distante ni intimidante.
+            </p>
+            <div class="case__transforms">
+              <span class="case__transforms-label">Transformaciones</span>
+              <ul class="case__transforms-list" role="list">
+                <li>De web corporativa estática a plataforma de captación cualificada</li>
+                <li>De formulario genérico a diagnóstico interactivo tipo wizard</li>
+                <li>De lead frío a primera conversación con contexto previo definido</li>
+              </ul>
+            </div>
+            <div class="case__tech" aria-label="Tecnologías utilizadas">
+              <span class="pill">HTML5</span>
+              <span class="pill">CSS3</span>
+              <span class="pill">JavaScript</span>
+              <span class="pill">IA</span>
+              <span class="pill">Vercel</span>
+            </div>
+          </div>
+
+          <a
+            class="case__visual case__visual--claveria"
+            href="https://claveria-abogados.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir proyecto Clavería Abogados en nueva pestaña"
+          >
+            <div class="case__comparison">
+              <div class="case__comparison-layer case__comparison-layer--after">
+                <img
+                  src="assets/projects/claveria.png"
+                  alt="Captura del diseño final del proyecto Clavería Abogados"
+                  class="case__img case__img--after"
+                  loading="lazy"
+                >
+              </div>
+              <div class="case__comparison-layer case__comparison-layer--before" aria-hidden="true">
+                <img
+                  src="assets/projects/claveria-before.png"
+                  alt="Captura del diseño original del proyecto Clavería Abogados"
+                  class="case__img case__img--before"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+            <span class="case__editorial-label" aria-hidden="true">Rediseño</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Transición: Work → Philosophy -->
+      <div class="work__transition" aria-hidden="true"></div>
+
+    </section>
+
+    <!-- ============================================================
+         SECCIÓN 3 — FILOSOFÍA — MANIFIESTO
+         5 principios. 4 tipos de composición. Máximo silencio.
+         Ritmo: monumental → contraste → monumental → íntimo → cierre
+         ============================================================ -->
+    <section class="philosophy" id="filosofia" aria-label="Filosofía">
+      <div class="phi">
+
+        <!-- ══════════════════════════════════════════════════
+             FASE 1 — TITULAR HERO DE ENTRADA
+             ══════════════════════════════════════════════════ -->
+        <div class="phi__hero-block" data-phi-phase="hero">
+          <div class="phi__hero-inner">
+            <span class="phi__hero-line1" data-phi-reveal>El diseño no empieza en la estética.</span>
+            <h2 class="phi__hero-line2" data-phi-reveal>Empieza en el objetivo.</h2>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════
+             FASE 2 — SISTEMA DE NODOS CON NÚCLEO CIRCULAR AZUL
+             ══════════════════════════════════════════════════ -->
+        <div class="phi__objectives" data-phi-phase="objectives">
+          <div class="phi__objectives-header">
+            <p class="phi__obj-eyebrow" data-phi-reveal>El objetivo cambia la experiencia</p>
+          </div>
+
+          <!-- Sistema de nodos -->
+          <div class="phi__nodes-system" id="phi-nodes">
+
+            <!-- Nodo 1: Captar -->
+            <div class="phi__node" data-phi-node="captar" style="grid-column:1; grid-row:1;">
+              <div class="phi__node-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </div>
+              <span class="phi__node-label">Captar</span>
+            </div>
+
+            <!-- Nodo 2: Vender -->
+            <div class="phi__node" data-phi-node="vender" style="grid-column:3; grid-row:1;">
+              <div class="phi__node-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              </div>
+              <span class="phi__node-label">Vender</span>
+            </div>
+
+            <!-- NÚCLEO CIRCULAR CENTRAL AZUL TRANSLÚCIDO -->
+            <div class="phi__nodes-core" style="grid-column:2; grid-row:1/4;">
+              <div class="phi__core-circle">
+                <span class="phi__core-badge">Objetivo</span>
+                <div class="phi__core-content" aria-live="polite">
+                  <div class="phi__insight-text" data-insight="captar">
+                    <h3 class="phi__insight-title">Captación de Leads</h3>
+                    <p class="phi__insight-desc">Recorrido visual limpio, propuesta de valor inmediata y formularios progresivos que reducen la fricción.</p>
+                  </div>
+                  <div class="phi__insight-text" data-insight="vender">
+                    <h3 class="phi__insight-title">Venta Digital</h3>
+                    <p class="phi__insight-desc">Jerarquía de producto contundente, prueba social estratégica y un proceso de pago fluido sin interrupciones.</p>
+                  </div>
+                  <div class="phi__insight-text" data-insight="reservar">
+                    <h3 class="phi__insight-title">Reservas & Citas</h3>
+                    <p class="phi__insight-desc">Visibilidad inmediata de disponibilidad, proceso guiado intuitivo y confirmaciones al instante.</p>
+                  </div>
+                  <div class="phi__insight-text" data-insight="convertir">
+                    <h3 class="phi__insight-title">Alta Conversión</h3>
+                    <p class="phi__insight-desc">Llamadas a la acción claras, eliminación de ruido perimetral y enfoque en la decisión del visitante.</p>
+                  </div>
+                  <div class="phi__insight-text" data-insight="confianza">
+                    <h3 class="phi__insight-title">Autoridad & Confianza</h3>
+                    <p class="phi__insight-desc">Demostración de casos reales, transparencia metodológica y evidencia visual antes de solicitar la acción.</p>
+                  </div>
+                  <div class="phi__insight-text" data-insight="presentar">
+                    <h3 class="phi__insight-title">Posicionamiento de Marca</h3>
+                    <p class="phi__insight-desc">Narrativa inmersiva, identidad de vanguardia y una historia que transmite el verdadero valor del proyecto.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nodo 3: Reservar -->
+            <div class="phi__node" data-phi-node="reservar" style="grid-column:1; grid-row:2;">
+              <div class="phi__node-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+              <span class="phi__node-label">Reservar</span>
+            </div>
+
+            <!-- Nodo 4: Convertir -->
+            <div class="phi__node" data-phi-node="convertir" style="grid-column:3; grid-row:2;">
+              <div class="phi__node-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <span class="phi__node-label">Convertir</span>
+            </div>
+
+            <!-- Nodo 5: Confiar -->
+            <div class="phi__node" data-phi-node="confianza" style="grid-column:1; grid-row:3;">
+              <div class="phi__node-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <span class="phi__node-label">Confiar</span>
+            </div>
+
+            <!-- Nodo 6: Presentar -->
+            <div class="phi__node" data-phi-node="presentar" style="grid-column:3; grid-row:3;">
+              <div class="phi__node-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </div>
+              <span class="phi__node-label">Presentar</span>
+            </div>
+
+          </div><!-- /phi__nodes-system -->
+
+        </div><!-- /phi__objectives -->
+
+
+        <!-- ══════════════════════════════════════════════════
+             FASE 3 — GRAN CIERRE EDITORIAL
+             Titular: "Cada decisión responde a un objetivo. Cada detalle comunica."
+             Sin números ni casillas encuadradas.
+             ══════════════════════════════════════════════════ -->
+        <div class="phi__closing" data-phi-phase="closing">
+
+          <div class="phi__closing-header">
+            <span class="phi__closing-line1" data-phi-reveal>Cada decisión responde a un objetivo.</span>
+            <h2 class="phi__closing-line2" data-phi-reveal>Cada detalle comunica.</h2>
+          </div>
+
+          <div class="phi__manifesto-flow">
+            <p class="phi__flow-item" style="transition-delay:50ms" data-phi-reveal>El espacio entre líneas.</p>
+            <p class="phi__flow-item" style="transition-delay:120ms" data-phi-reveal>La velocidad de una animación.</p>
+            <p class="phi__flow-item" style="transition-delay:190ms" data-phi-reveal>El peso de un color.</p>
+            <p class="phi__flow-item" style="transition-delay:260ms" data-phi-reveal>La posición de un botón.</p>
+            <p class="phi__flow-item" style="transition-delay:330ms" data-phi-reveal>La cantidad de información.</p>
+            <p class="phi__flow-item" style="transition-delay:400ms" data-phi-reveal>El recorrido de un usuario.</p>
+          </div>
+
+          <div class="phi__closing-final" data-phi-reveal>
+            <p class="phi__final-text">
+              Todo habla. Todo el tiempo.
+              <span class="phi__final-emphasis">La pregunta es si habla bien.</span>
+            </p>
+          </div>
+
+        </div><!-- /phi__closing -->
+
+      </div><!-- /phi -->
+
+      <!-- Transición: Philosophy → Process -->
+      <div class="philosophy__transition" aria-hidden="true"></div>
+
+    </section>
+
+
+    <!-- ============================================================
+         SECCIÓN 4 — PROCESO — SCROLL HORIZONTAL
+         Inspiración: metodología Monos.
+         Desktop: 4 paneles full-viewport, desplazamiento horizontal.
+         Mobile: layout vertical con paneles apilados.
+         ============================================================ -->
+    <section class="process" id="proceso" aria-labelledby="process-panel-1-title">
+
+      <!-- El outer define la altura total que permite el viaje horizontal -->
+      <div class="process__outer">
+
+        <!-- El sticky container se ancla mientras el usuario scrollea -->
+        <div class="process__sticky">
+
+          <!-- El track se mueve horizontalmente vía JS -->
+          <div class="process__track" id="processTrack">
+
+            <!-- Panel 01 — Descubrimiento -->
+            <div class="process__panel" id="process-panel-1">
+              <div class="process__panel-inner">
+
+                <div class="process__panel-meta">
+                  <div class="process__dots" aria-label="Paso 1 de 4" role="status">
+                    <span class="process__dot is-active"></span>
+                    <span class="process__dot"></span>
+                    <span class="process__dot"></span>
+                    <span class="process__dot"></span>
+                  </div>
+                  <span class="process__panel-num">01 / 04</span>
+                </div>
+
+                <h2 class="process__panel-title" id="process-panel-1-title">Descubrimiento</h2>
+                <p class="process__panel-lead">Entiendo el negocio antes de abrir Figma.</p>
+
+                <div class="process__panel-columns">
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Qué hago</span>
+                    <p>Análisis del sector y del contexto competitivo. Definición de objetivos reales. Comprensión profunda del usuario final y sus necesidades concretas.</p>
+                  </div>
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Impacto</span>
+                    <p>Una hipótesis de diseño respaldada por datos reales. La diferencia entre resolver el problema correcto y resolver bien el problema equivocado.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="process__panel-number-bg" aria-hidden="true">01</div>
+              <div class="process__progress-bar" aria-hidden="true">
+                <div class="process__progress-line--fill" id="processProgressLine"></div>
+              </div>
+            </div>
+
+            <!-- Panel 02 — Diseño -->
+            <div class="process__panel" id="process-panel-2">
+              <div class="process__panel-inner">
+
+                <div class="process__panel-meta">
+                  <div class="process__dots" aria-label="Paso 2 de 4" role="status">
+                    <span class="process__dot is-done"></span>
+                    <span class="process__dot is-active"></span>
+                    <span class="process__dot"></span>
+                    <span class="process__dot"></span>
+                  </div>
+                  <span class="process__panel-num">02 / 04</span>
+                </div>
+
+                <h3 class="process__panel-title" id="process-panel-2-title">Diseño</h3>
+                <p class="process__panel-lead">La arquitectura antes que la estética.</p>
+
+                <div class="process__panel-columns">
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Qué hago</span>
+                    <p>Arquitectura de información, flujo de usuario, sistema de diseño. Prototipo interactivo validado antes de escribir una sola línea de código.</p>
+                  </div>
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Impacto</span>
+                    <p>Una experiencia validada antes del desarrollo. El error detectado en prototipo cuesta diez veces menos que el detectado en producción.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="process__panel-number-bg" aria-hidden="true">02</div>
+            </div>
+
+            <!-- Panel 03 — Construcción -->
+            <div class="process__panel" id="process-panel-3">
+              <div class="process__panel-inner">
+
+                <div class="process__panel-meta">
+                  <div class="process__dots" aria-label="Paso 3 de 4" role="status">
+                    <span class="process__dot is-done"></span>
+                    <span class="process__dot is-done"></span>
+                    <span class="process__dot is-active"></span>
+                    <span class="process__dot"></span>
+                  </div>
+                  <span class="process__panel-num">03 / 04</span>
+                </div>
+
+                <h3 class="process__panel-title" id="process-panel-3-title">Construcción</h3>
+                <p class="process__panel-lead">El código debe ser tan limpio como el diseño.</p>
+
+                <div class="process__panel-columns">
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Qué hago</span>
+                    <p>Desarrollo frontend moderno, animaciones precisas, integraciones técnicas. Código documentado, escalable y listo para evolucionar sin deuda técnica.</p>
+                  </div>
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Impacto</span>
+                    <p>Un producto en producción que cualquier desarrollador puede entender, mantener y escalar. No una entrega final. Una base sólida.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="process__panel-number-bg" aria-hidden="true">03</div>
+            </div>
+
+            <!-- Panel 04 — Evolución -->
+            <div class="process__panel" id="process-panel-4">
+              <div class="process__panel-inner">
+
+                <div class="process__panel-meta">
+                  <div class="process__dots" aria-label="Paso 4 de 4" role="status">
+                    <span class="process__dot is-done"></span>
+                    <span class="process__dot is-done"></span>
+                    <span class="process__dot is-done"></span>
+                    <span class="process__dot is-active"></span>
+                  </div>
+                  <span class="process__panel-num">04 / 04</span>
+                </div>
+
+                <h3 class="process__panel-title" id="process-panel-4-title">Evolución</h3>
+                <p class="process__panel-lead">La entrega no es el fin. Es el comienzo.</p>
+
+                <div class="process__panel-columns">
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Qué hago</span>
+                    <p>Análisis de métricas reales, ajuste iterativo, identificación de fricciones que el usuario experimenta después del lanzamiento.</p>
+                  </div>
+                  <div class="process__panel-col">
+                    <span class="process__col-label">Impacto</span>
+                    <p>Un ecosistema digital que sigue mejorando. No una entrega puntual. Una conversación que continúa y un producto que crece.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="process__panel-number-bg" aria-hidden="true">04</div>
+            </div>
+
+          </div><!-- /process__track -->
+
+        </div><!-- /process__sticky -->
+
+      </div><!-- /process__outer -->
+
+    </section>
+
+    <!-- ============================================================
+         SECCIÓN 5 — CAPACIDADES — TARJETAS APILADAS
+         Cada tarjeta es un capítulo. Se acumulan al hacer scroll.
+         Bordes alternos: electric (impares) / gold (pares).
+         ============================================================ -->
+    <section class="capabilities" id="capacidades" aria-label="Capacidades">
+
+      <div class="capabilities__intro" data-animate>
+        <p class="capabilities__lead">
+          El valor no está en dominar cada disciplina de forma aislada.<br>
+          Está en saber cuándo y cómo hacerlas trabajar juntas.
+        </p>
+      </div>
+
+      <div class="capabilities__stack">
+
+        <!-- Tarjeta 01 — Diseño -->
+        <div class="capability-card" style="--i:0">
+          <div class="capability-card__inner">
+            <span class="capability-card__label">Diseño</span>
+            <h3 class="capability-card__title">La capa que el usuario percibe.</h3>
+            <p class="capability-card__desc">
+              El diseño decide qué se siente, no solo qué se ve. Experiencia de usuario,
+              sistemas de diseño, jerarquía visual y microinteracciones que convierten
+              la intención en claridad.
+            </p>
+            <ul class="capability-card__tags" role="list">
+              <li>UX / UI</li>
+              <li>Sistemas de diseño</li>
+              <li>Microinteracciones</li>
+              <li>Diseño editorial</li>
+            </ul>
+          </div>
+          <div class="capability-card__bg-word" aria-hidden="true">Diseño</div>
+        </div>
+
+        <!-- Tarjeta 02 — Desarrollo -->
+        <div class="capability-card" style="--i:1">
+          <div class="capability-card__inner">
+            <span class="capability-card__label">Desarrollo</span>
+            <h3 class="capability-card__title">La capa que lo hace posible.</h3>
+            <p class="capability-card__desc">
+              Frontend moderno, código limpio, arquitectura escalable. El desarrollo
+              convierte la intención en realidad sin que el usuario note el esfuerzo
+              que hay detrás.
+            </p>
+            <ul class="capability-card__tags" role="list">
+              <li>HTML · CSS · JS</li>
+              <li>React · Next.js</li>
+              <li>Animaciones</li>
+              <li>Responsive</li>
+            </ul>
+          </div>
+          <div class="capability-card__bg-word" aria-hidden="true">Dev</div>
+        </div>
+
+        <!-- Tarjeta 03 — Automatización -->
+        <div class="capability-card" style="--i:2">
+          <div class="capability-card__inner">
+            <span class="capability-card__label">Automatización</span>
+            <h3 class="capability-card__title">La capa que libera.</h3>
+            <p class="capability-card__desc">
+              Formularios inteligentes, flujos conectados, procesos sin fricción.
+              La automatización elimina lo que distrae para dejar espacio
+              a lo que importa de verdad.
+            </p>
+            <ul class="capability-card__tags" role="list">
+              <li>Flujos de captación</li>
+              <li>Wizards de cualificación</li>
+              <li>Integraciones</li>
+              <li>CRO</li>
+            </ul>
+          </div>
+          <div class="capability-card__bg-word" aria-hidden="true">Auto</div>
+        </div>
+
+        <!-- Tarjeta 04 — Inteligencia Artificial -->
+        <div class="capability-card" style="--i:3">
+          <div class="capability-card__inner">
+            <span class="capability-card__label">Inteligencia Artificial</span>
+            <h3 class="capability-card__title">La capa que amplifica.</h3>
+            <p class="capability-card__desc">
+              Herramientas que aumentan la capacidad humana, no la reemplazan.
+              La IA aporta valor cuando el problema está bien definido
+              y la persona detrás sabe qué busca.
+            </p>
+            <ul class="capability-card__tags" role="list">
+              <li>IA aplicada</li>
+              <li>Diagnósticos interactivos</li>
+              <li>Personalización</li>
+              <li>Asistencia contextual</li>
+            </ul>
+          </div>
+          <div class="capability-card__bg-word" aria-hidden="true">AI</div>
+        </div>
+
+      </div><!-- /capabilities__stack -->
+
+    </section>
+
+    <!-- ============================================================
+         SECCIÓN 6 — LA PERSONA
+         Fotografía en color. Primera persona. Sin currículum.
+         Hover potencia brillo y saturación (no cambia a color desde B&W).
+         ============================================================ -->
+    <section class="about" id="sobre-mi" aria-labelledby="about-heading">
+      <div class="about__container">
+
+        <div class="about__photo-wrapper" data-animate>
+          <img
+            class="about__photo"
+            src="assets/profile.jpg"
+            alt="Juan González Luttra"
+            loading="lazy"
+          >
+          <div class="about__signature" aria-hidden="true">JGL</div>
+        </div>
+
+        <div class="about__content" data-animate>
+          <div class="about__header">
+            <h2 class="about__name" id="about-heading">Juan González Luttra</h2>
+            <p class="about__title">Diseñador · Desarrollador Frontend · Ecosistemas Digitales</p>
+          </div>
+
+          <div class="about__bio">
+            <p>
+              Diseño porque creo que la mayoría de los problemas digitales son,
+              en realidad, problemas de claridad.
+            </p>
+            <p>
+              Alguien que no entiende su propio producto digital. Alguien que no sabe
+              cómo hacer que una idea llegue a las personas correctas. Alguien que tiene
+              una buena empresa pero una presencia que no la representa.
+              Eso es lo que me interesa resolver.
+            </p>
+            <p>
+              Cuando trabajo en un proyecto, pienso primero en el negocio. Luego en las
+              personas que lo usarán. Y después en cómo el diseño, el código y la tecnología
+              pueden trabajar juntos para que algo complejo se sienta simple.
+            </p>
+          </div>
+
+          <dl class="about__facts">
+            <div>
+              <dt class="about__fact-label">Especialidad</dt>
+              <dd class="about__fact-value">Ecosistemas Digitales</dd>
+            </div>
+            <div>
+              <dt class="about__fact-label">Enfoque</dt>
+              <dd class="about__fact-value">Diseño + Código + IA</dd>
+            </div>
+            <div>
+              <dt class="about__fact-label">Disponibilidad</dt>
+              <dd class="about__fact-value">Proyectos seleccionados</dd>
+            </div>
+            <div>
+              <dt class="about__fact-label">Ubicación</dt>
+              <dd class="about__fact-value">España · Remote</dd>
+            </div>
+          </dl>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECCIÓN 7 — CONTACTO
+         Cierre del argumento. Halo dorado dominante.
+         El único momento donde el dorado se convierte en atmósfera.
+         ============================================================ -->
+    <section class="contact" id="contacto" aria-labelledby="contact-heading">
+      <div class="contact__container">
+
+        <header class="contact__header" data-animate>
+          <h2 class="contact__heading" id="contact-heading">
+            Si tienes un proyecto que merece<br>
+            una experiencia mejor<span class="contact__heading-dot">,</span><br>
+            hablemos<span class="contact__heading-dot">.</span>
+          </h2>
+          <p class="contact__subheading">
+            No busco el siguiente cliente. Busco el siguiente proyecto
+            donde el diseño, el código y la tecnología tengan algo que decir.
+          </p>
+        </header>
+
+        <!-- Email copy -->
+        <div class="contact__email-wrapper" data-animate>
+          <span class="contact__email-label">Email</span>
+          <button
+            class="contact__email-btn"
+            id="emailCopy"
+            data-email="hola@juangonzalezluttra.com"
+            aria-label="Copiar dirección de email"
+          >
+            <span class="contact__email-text" data-label>hola@juangonzalezluttra.com</span>
+            <span class="contact__email-icon" aria-hidden="true">
+              <!-- Icono copiar -->
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="6" y="6" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 12V3h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <!-- Icono confirmación -->
+              <svg class="icon-check is-hidden" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M4 9.5L7 12.5L14 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <!-- Links secundarios -->
+        <div class="contact__links" data-animate>
+          <a
+            href="https://linkedin.com/in/juangonzalezluttra"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact__link"
+            aria-label="Perfil de LinkedIn de Juan González Luttra"
+          >
+            LinkedIn
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="contact__footer">
+          <p class="contact__footer-brand">
+            Juan González Luttra · <span>Ecosistemas Digitales</span>
+          </p>
+          <p class="contact__footer-meta">
+            © <span data-year></span> · Hecho con intención.
+          </p>
+        </footer>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts — type="module" activa ES Modules nativos -->
+  <script type="module" src="js/main.js"></script>
+
+</body>
+</html>

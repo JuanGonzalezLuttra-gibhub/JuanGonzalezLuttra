@@ -1,0 +1,287 @@
+/* ============================================================
+   PHILOSOPHY — Manifiesto editorial
+   Segunda iteración: 5 principios, máximo silencio, ritmo variado
+   Cuatro tipos de principio: monumental, contraste, íntimo, cierre
+   ============================================================ */
+
+.philosophy {
+  background: var(--bg-philosophy);
+  padding: var(--section-padding) var(--container-padding);
+  padding-top: clamp(4rem, 8vw, 7rem);
+  padding-bottom: clamp(6rem, 12vw, 10rem);
+  position: relative;
+}
+
+/* Ausencia de halos — el máximo silencio es la atmósfera */
+
+.philosophy__header {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  margin-bottom: clamp(5rem, 12vw, 10rem);
+}
+
+/* ---- Manifesto container ---- */
+.philosophy__manifesto {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Separador ornamental ---- */
+.manifesto-sep {
+  display: flex;
+  align-items: center;
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  color: var(--color-gold);
+  opacity: 0.3;
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-light);
+  letter-spacing: 0.5em;
+}
+
+/* ============================================================
+   TIPOS DE PRINCIPIO
+   ============================================================ */
+
+/* ---- 01, 03 — MONUMENTAL: texto gigante, toda la anchura ---- */
+.principle--monumental {
+  position: relative;
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  border-top: none;
+}
+
+.principle--monumental .principle__index {
+  display: block;
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.18em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: var(--space-6);
+}
+
+.principle--monumental .principle__text {
+  font-size: var(--text-manifesto);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-8);
+  max-width: 18ch;
+  /* Reveal: la animación parte de translateX y clip-path */
+  clip-path: inset(0 100% 0 0);
+  transform: translateX(-10px);
+  transition:
+    clip-path  1200ms cubic-bezier(0.16, 1, 0.3, 1) 0ms,
+    transform  1200ms cubic-bezier(0.16, 1, 0.3, 1) 0ms;
+}
+
+.principle--monumental.is-triggered .principle__text {
+  clip-path: inset(0 0% 0 0);
+  transform: translateX(0);
+}
+
+.principle--monumental .principle__resonance {
+  font-size: var(--text-large);
+  font-weight: var(--font-weight-light);
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  max-width: 560px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity   900ms var(--ease-out) 600ms,
+    transform 900ms var(--ease-out) 600ms;
+}
+
+.principle--monumental.is-triggered .principle__resonance {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- 02 — CONTRASTE: desplazado a la derecha, tamaño medio ---- */
+.principle--contrast {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  border-top: none;
+  align-items: start;
+}
+
+.principle--contrast .principle__index {
+  font-size: clamp(5rem, 12vw, 10rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201, 168, 76, 0.2);
+  line-height: 0.9;
+  user-select: none;
+  align-self: start;
+}
+
+.principle--contrast .principle__body {
+  opacity: 0;
+  transform: translateX(24px);
+  transition:
+    opacity   900ms var(--ease-out) 200ms,
+    transform 900ms var(--ease-out) 200ms;
+}
+
+.principle--contrast.is-triggered .principle__body {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.principle--contrast .principle__text {
+  font-size: var(--text-manifesto-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-5);
+}
+
+.principle--contrast .principle__resonance {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+/* ---- 04 — ÍNTIMO: dos columnas compactas, tipo footnote ---- */
+.principle--intimate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(4rem, 7vw, 6rem) 0;
+  border-top: none;
+  align-items: center;
+  max-width: 800px;
+}
+
+.principle--intimate .principle__index {
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.14em;
+  color: var(--color-electric);
+  text-transform: uppercase;
+  white-space: nowrap;
+  align-self: start;
+  padding-top: 0.2em;
+}
+
+.principle--intimate .principle__text {
+  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.principle--intimate .principle__resonance {
+  font-size: var(--text-small);
+  line-height: 1.7;
+  color: var(--color-text-tertiary);
+}
+
+/* ---- 05 — CIERRE: manifiesto final, centrado, dorado ---- */
+.principle--closing {
+  padding: clamp(6rem, 12vw, 10rem) 0 clamp(2rem, 4vw, 3rem);
+  text-align: center;
+  position: relative;
+}
+
+.principle--closing::before {
+  display: none;
+}
+
+.principle--closing .principle__index {
+  display: block;
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.18em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: var(--space-6);
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out) 100ms;
+}
+
+.principle--closing.is-triggered .principle__index {
+  opacity: 1;
+}
+
+.principle--closing .principle__text {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-8);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity   900ms var(--ease-out) 300ms,
+    transform 900ms var(--ease-out) 300ms;
+}
+
+.principle--closing.is-triggered .principle__text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.principle--closing .principle__resonance {
+  font-size: var(--text-large);
+  font-weight: var(--font-weight-light);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-width: 560px;
+  margin: 0 auto;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out) 600ms;
+}
+
+.principle--closing.is-triggered .principle__resonance {
+  opacity: 1;
+}
+
+/* ---- Transición inferior: Philosophy → Process ---- */
+.philosophy__transition {
+  height: clamp(80px, 12vw, 160px);
+  background: linear-gradient(to bottom, var(--bg-philosophy), var(--bg-process));
+  margin: 0 calc(-1 * var(--container-padding));
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .principle--contrast {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  .principle--contrast .principle__index {
+    font-size: clamp(3rem, 15vw, 6rem);
+  }
+  .principle--intimate {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    max-width: 100%;
+  }
+  .principle--closing { text-align: left; }
+  .principle--closing .principle__resonance { margin: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .principle--monumental .principle__text,
+  .principle--monumental .principle__resonance,
+  .principle--contrast .principle__body,
+  .principle--closing .principle__index,
+  .principle--closing .principle__text,
+  .principle--closing .principle__resonance {
+    clip-path: none;
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}

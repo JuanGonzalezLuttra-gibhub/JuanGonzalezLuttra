@@ -1,0 +1,298 @@
+/* ============================================================
+   COMPONENTS — Nav · Botones · Cursor
+   Segunda iteración: nav más editorial, progress bar, active state
+   ============================================================ */
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 100;
+  transition:
+    background-color var(--duration-slow) var(--ease-inout),
+    border-color     var(--duration-slow) var(--ease-inout),
+    backdrop-filter  var(--duration-slow) var(--ease-inout);
+}
+
+/* Estado por defecto: transparente, integrado en el hero */
+.nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: transparent;
+  transition: background var(--duration-slow) var(--ease-inout);
+}
+
+/* Estado scrolled: cristalización glassmorphism */
+.nav--scrolled {
+  background-color: rgba(8, 8, 8, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.nav--scrolled::after {
+  background: var(--color-border);
+}
+
+.nav__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+/* ---- Logo ---- */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.nav__logo:hover { opacity: 0.75; }
+
+.nav__logo img {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* ---- Links de navegación ---- */
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.nav__link {
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  position: relative;
+  transition: color var(--duration-fast) var(--ease-out);
+  padding-bottom: 2px;
+}
+
+/* Dot indicator bajo el link activo */
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.nav__link:hover,
+.nav__link--active {
+  color: var(--color-text-primary);
+}
+
+.nav__link:hover::after,
+.nav__link--active::after {
+  transform: scaleX(1);
+}
+
+/* CTA de contacto */
+.nav__link--cta {
+  color: var(--color-text-primary);
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 100px;
+  letter-spacing: 0.04em;
+  transition:
+    color            var(--duration-fast) var(--ease-out),
+    border-color     var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.nav__link--cta::after { display: none; }
+
+.nav__link--cta:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+/* ---- Mobile burger ---- */
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.nav__burger-line {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--color-text-primary);
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity   var(--duration-base) var(--ease-out);
+  transform-origin: center;
+}
+
+/* Mobile menu overlay */
+.nav__mobile {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(8, 8, 8, 0.97);
+  backdrop-filter: blur(20px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.nav__mobile.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav__mobile a {
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav__mobile a:hover { color: var(--color-text-primary); }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__burger { display: flex; }
+  .nav__mobile { display: flex; }
+}
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-family);
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 0.875rem 1.75rem;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color     var(--duration-fast) var(--ease-out),
+    color            var(--duration-fast) var(--ease-out),
+    box-shadow       var(--duration-fast) var(--ease-out),
+    transform        var(--duration-fast) var(--ease-out);
+  will-change: transform;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background-color: var(--color-electric);
+  color: #fff;
+  border-color: var(--color-electric);
+}
+
+.btn--primary:hover {
+  background-color: #3b74ff;
+  box-shadow: 0 0 24px rgba(37, 99, 255, 0.35);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+/* ============================================================
+   CURSOR PERSONALIZADO
+   ============================================================ */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.cursor--visible { opacity: 1; }
+
+.cursor__dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(242, 242, 240, 0.9);
+  transition:
+    transform var(--duration-base) var(--ease-spring),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.cursor--hover .cursor__dot {
+  transform: scale(1.8);
+  background: rgba(242, 242, 240, 0.7);
+}
+
+/* Cursor "open project" en casos */
+.cursor--open .cursor__dot {
+  transform: scale(2.4);
+  background: rgba(37, 99, 255, 0.9);
+}
+
+/* Anular cualquier cursor nativo en toda la web (solo dispositivos de puntero fino) */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}

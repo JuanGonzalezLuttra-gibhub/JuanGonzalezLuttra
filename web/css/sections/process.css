@@ -1,0 +1,266 @@
+/* ============================================================
+   PROCESS — Scroll horizontal (inspiración Monos)
+   
+   Arquitectura Sticky Horizontal:
+   1. .process            → Contenedor de sección sin transforms
+   2. .process__outer      → height: 500vh (define la duración del viaje)
+   3. .process__sticky     → position: sticky; top: 0; height: 100vh; (fijado exacto)
+                            ¡CRÍTICO: Sin CSS transform en este nodo!
+   4. .process__track      → width: 400vw; translate3d(X, 0, 0) vía JS
+   ============================================================ */
+
+.process {
+  background: var(--bg-process);
+  position: relative;
+  transform: none !important;
+}
+
+.process__outer {
+  height: 500vh;
+  position: relative;
+  transform: none !important;
+}
+
+/* ---- Sticky container ----
+   Se mantiene fijo a top: 0 mientras el usuario recorre los 500vh del outer.
+   Recorta el overflow del track de 400vw.
+   No debe tener transform propio para no romper position: sticky en Chrome. */
+.process__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  transform: none !important;
+  will-change: auto;
+  z-index: 2;
+}
+
+/* Halo azul tenue — temperatura naval */
+.process::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 50%;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    var(--halo-electric-mid) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Track horizontal: los 4 paneles en fila ---- */
+.process__track {
+  display: flex;
+  width: 400vw;   /* 4 paneles × 100vw */
+  height: 100%;
+  will-change: transform;
+  transition: none; /* sin transition CSS — fluido vía rAF JS */
+}
+
+/* ---- Panel individual ---- */
+.process__panel {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: var(--nav-height) var(--container-padding) var(--space-16);
+  overflow: hidden;
+}
+
+/* Línea vertical de separación desactivada */
+.process__panel + .process__panel {
+  border-left: none;
+}
+
+/* ---- Número decorativo de fondo ---- */
+.process__panel-number-bg {
+  position: absolute;
+  bottom: -0.15em;
+  right: -0.05em;
+  font-size: clamp(18rem, 35vw, 30rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(37, 99, 255, 0.06);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  transition: -webkit-text-stroke-color var(--duration-slow) var(--ease-out);
+}
+
+/* ---- Inner del panel ---- */
+.process__panel-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ---- Meta: dots + número de panel ---- */
+.process__panel-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.process__dots {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.process__dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-tertiary);
+  transition:
+    background    var(--duration-base) var(--ease-out),
+    transform     var(--duration-base) var(--ease-spring);
+}
+
+.process__dot.is-done {
+  background: var(--color-gold);
+  opacity: 0.5;
+}
+
+.process__dot.is-active {
+  background: var(--color-electric);
+  transform: scale(1.5);
+  box-shadow: 0 0 8px var(--color-electric-glow);
+}
+
+.process__panel-num {
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.14em;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Título de panel ---- */
+.process__panel-title {
+  font-size: var(--text-display-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--color-text-primary);
+}
+
+/* ---- Lead ---- */
+.process__panel-lead {
+  font-size: var(--text-large);
+  font-weight: var(--font-weight-light);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  padding-bottom: var(--space-4);
+  border-bottom: none;
+}
+
+/* ---- Columnas: Qué hago / Impacto ---- */
+.process__panel-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+}
+
+.process__panel-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.process__col-label {
+  display: block;
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.process__panel-col p {
+  font-size: var(--text-small);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Barra de progreso horizontal (gold) ---- */
+.process__progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.process__progress-line--fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;  /* actualizada por JS */
+  height: 100%;
+  background: linear-gradient(to right, var(--color-electric), var(--color-gold));
+  transition: width 80ms linear;
+}
+
+/* ============================================================
+   RESPONSIVE — Ajustes de escala manteniendo Scroll Horizontal
+   ============================================================ */
+@media (max-width: 1023px) {
+  .process__panel-inner {
+    max-width: 90vw;
+    gap: var(--space-5);
+  }
+
+  .process__panel-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .process__panel-number-bg {
+    font-size: 32vw;
+  }
+}
+
+@media (max-width: 640px) {
+  .process__panel {
+    padding: calc(var(--nav-height) + 1rem) var(--container-padding) var(--space-6);
+  }
+
+  .process__panel-inner {
+    gap: var(--space-3);
+  }
+
+  .process__panel-title {
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+  }
+
+  .process__panel-lead {
+    font-size: clamp(1.0rem, 3.8vw, 1.18rem);
+    padding-bottom: 0;
+  }
+
+  .process__panel-columns {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .process__panel-col p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+}
