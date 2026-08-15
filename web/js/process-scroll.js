@@ -1,15 +1,12 @@
 /**
- * process-scroll.js — Scroll horizontal hijack para la sección Proceso
+ * process-scroll.js — Scroll horizontal ultra-fluido para Proceso (Desktop & Mobile)
  *
  * Principio de diseño:
- * - .process__outer tiene height: 500vh (define la duración del scroll).
- * - .process__sticky tiene position: sticky; top: 0; height: 100vh.
- * - getBoundingClientRect() calcula dinámicamente rect.top.
- * - Mientras rect.top <= 0, translateY es 0 (fijado por CSS sticky) y
- *   translate3d desplaza el track ÚNICAMENTE en el eje X (-translateX, 0px, 0px).
- * - Esto garantiza un desplazamiento 100% horizontal sin derivas diagonales ni verticales.
- *
- * Mobile (< 1024px): desactivado, layout vertical natural.
+ * - .process__outer tiene height: 500vh (duración del recorrido).
+ * - .process__sticky tiene position: sticky; top: 0; height: 100vh / 100dvh.
+ * - Desplazamiento 100% horizontal mediante translate3d(translateX, 0px, 0px).
+ * - Lerp smoothing (0.16) para que el movimiento sea fluido, controlado, progresivo
+ *   y consistente en todas las pantallas (especialmente Mobile).
  */
 
 export function initProcessScroll() {
@@ -23,32 +20,46 @@ export function initProcessScroll() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NUM_PANELS    = panels.length;
 
-  let rafPending = false;
+  let targetX     = 0;
+  let currentX    = 0;
+  let isAnimating = false;
 
-  const updateScroll = () => {
+  const calculateTargetX = () => {
     const rect       = outer.getBoundingClientRect();
     const windowH    = window.innerHeight;
     const scrollable = outer.offsetHeight - windowH;
 
-    if (scrollable <= 0) return;
+    if (scrollable <= 0) return 0;
 
-    // Progreso de scroll exclusivo dentro del rango sticky
     let progress = 0;
     if (rect.top <= 0) {
       progress = Math.min(1, Math.max(0, -rect.top / scrollable));
     }
 
-    // Desplazamiento horizontal exacto:
-    // PURE X-axis ONLY via translate3d(translateX, 0px, 0px).
-    // Y-axis MUST BE 0px ALWAYS to eliminate any diagonal movement.
-    const totalTranslate = window.innerWidth * (NUM_PANELS - 1);
-    const translateX     = -(progress * totalTranslate);
+    const panelWidth     = panels[0].offsetWidth || window.innerWidth;
+    const totalTranslate = panelWidth * (NUM_PANELS - 1);
+    return -(progress * totalTranslate);
+  };
+
+  const render = () => {
+    // Lerp smoothing (0.16 para respuesta inmediata e inercia suave)
+    const diff = targetX - currentX;
+
+    if (Math.abs(diff) > 0.05) {
+      currentX += diff * 0.16;
+    } else {
+      currentX = targetX;
+    }
 
     if (!reducedMotion) {
-      track.style.transform = `translate3d(${translateX.toFixed(2)}px, 0px, 0px)`;
+      track.style.transform = `translate3d(${currentX.toFixed(2)}px, 0px, 0px)`;
     }
 
     // Actualización de la barra de progreso
+    const panelWidth     = panels[0].offsetWidth || window.innerWidth;
+    const totalTranslate = panelWidth * (NUM_PANELS - 1);
+    const progress       = totalTranslate > 0 ? Math.min(1, Math.max(0, -currentX / totalTranslate)) : 0;
+
     if (progLine) {
       progLine.style.width = `${(progress * 100).toFixed(1)}%`;
     }
@@ -66,21 +77,35 @@ export function initProcessScroll() {
         }
       });
     });
+
+    if (Math.abs(targetX - currentX) > 0.05) {
+      requestAnimationFrame(render);
+    } else {
+      isAnimating = false;
+    }
   };
 
   const onScroll = () => {
-    if (!rafPending) {
-      rafPending = true;
-      requestAnimationFrame(() => {
-        rafPending = false;
-        updateScroll();
-      });
+    targetX = calculateTargetX();
+    if (!isAnimating) {
+      isAnimating = true;
+      requestAnimationFrame(render);
     }
   };
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', updateScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    targetX  = calculateTargetX();
+    currentX = targetX;
+    if (!reducedMotion) {
+      track.style.transform = `translate3d(${currentX.toFixed(2)}px, 0px, 0px)`;
+    }
+  }, { passive: true });
 
   // Ejecución inicial
-  updateScroll();
+  targetX  = calculateTargetX();
+  currentX = targetX;
+  if (!reducedMotion) {
+    track.style.transform = `translate3d(${currentX.toFixed(2)}px, 0px, 0px)`;
+  }
 }
