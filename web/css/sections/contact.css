@@ -183,7 +183,7 @@
   font-weight: var(--font-weight-light);
   line-height: 1.65;
   color: var(--color-text-secondary);
-  max-width: 580px;
+  max-width: 680px;
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
